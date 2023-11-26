@@ -2,6 +2,9 @@
 import './App.css'
 import { CiSearch } from "react-icons/ci"
 import { IoIosAddCircle } from "react-icons/io"
+import ContactCard from './components/ContactCard'
+
+
 import Navbar from './components/Navbar'
 import { useEffect, useState } from 'react'
 import {collection ,getDocs} from "firebase/firestore";
@@ -19,8 +22,18 @@ function App() {
         const contactsRef= collection(db,"contacts"); 
         const contactSnapshot = await getDocs(contactsRef);
         const contactList=contactSnapshot.docs.map((doc)=>
-          doc.data());
+        {
+          // mapping document data to a list of objects
+          return {
+            id:doc.id,
+            ...doc.data(),
+            // creates array of data
+          };
+
+        }); 
+          
           console.log(contactList);
+          setContacts(contactList);
         }
       
       catch(error){
@@ -41,16 +54,33 @@ function App() {
   <Navbar />
   <div className='flex'>
 
-  <div className='relative flex items-center'>
-    <CiSearch className= 'ml-1 text-white text-3xl absolute' />
-    <input type="text"
-    placeholder='Search Contact'
+      <div className='relative flex items-center'>
+         <CiSearch className= 'ml-1 text-white text-3xl absolute' />
+      <input type="text"
+        placeholder='Search Contact'
       className='bg-transparent border border-white rounded-md h-[40px] flex-grow text-white pl-9'/>
-  </div>
+       </div>
   
-    <IoIosAddCircle className='text-5xl text-white gap-2 cursor-pointer' />
+       
+        <IoIosAddCircle className='text-5xl text-white gap-2 cursor-pointer' />
+
+
+        
  
-  </div>
+    </div> 
+    <div className='mt-4 flex gap-4 flex-col'>
+        {
+        // here this contact is of setcontact state
+        contacts.map(contact=>(
+          // passing props to contact card
+          <ContactCard key={contact.id} contact={contact} /> 
+        )) 
+
+
+
+      }
+        </div>  
+
     </>
 
   )
