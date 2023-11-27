@@ -5,6 +5,7 @@ import { IoMdTrash } from 'react-icons/io'
 import { db } from '../config/firebase';
 import UpdateContact from './UpdateContact';
 import useDisclouse from '../hooks/useDisclouse';
+import { toast } from "react-toastify";
 
 // props
 const ContactCard = ({contact}) => {
@@ -16,7 +17,7 @@ const ContactCard = ({contact}) => {
     const deleteContact= async (id)=>{
       try{
         await deleteDoc(doc(db, "contacts" , id));
-
+        toast.success("Contact Deleted Successfully");
       }catch(error){
         console.log(error)
       }
