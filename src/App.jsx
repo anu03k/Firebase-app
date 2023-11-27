@@ -2,7 +2,10 @@
 import './App.css'
 import { CiSearch } from "react-icons/ci"
 import { IoIosAddCircle } from "react-icons/io"
+
+
 import ContactCard from './components/ContactCard'
+import UpdateContact from './components/UpdateContact'
 
 
 import Navbar from './components/Navbar'
@@ -11,9 +14,18 @@ import {collection ,getDocs} from "firebase/firestore";
 import {db} from "./config/firebase"
 
 
+
 function App() {
 
   const [contacts,setContacts] =useState([]);
+  const [isOpen,SetOpen]=useState(false);
+  // modal open or close
+  const onOpen=()=>{
+    SetOpen(true);
+  };
+  const onClose=()=>{
+    SetOpen(false);
+  }
   
   useEffect(()=>{
     const getContact= async()=>{
@@ -51,8 +63,8 @@ function App() {
   return(
 
   <>
-  <Navbar />
-  <div className='flex'>
+  <Navbar  />
+  <div className='flex ' >
 
       <div className='relative flex items-center'>
          <CiSearch className= 'ml-1 text-white text-3xl absolute' />
@@ -62,7 +74,7 @@ function App() {
        </div>
   
        
-        <IoIosAddCircle className='text-5xl text-white gap-2 cursor-pointer' />
+        <IoIosAddCircle  onClick={onOpen}  className='text-5xl text-white gap-2 cursor-pointer' />
 
 
         
@@ -80,6 +92,8 @@ function App() {
 
       }
         </div>  
+       <UpdateContact onClose={onClose} isOpen={isOpen}></UpdateContact>
+        
 
     </>
 

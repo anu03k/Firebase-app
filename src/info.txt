@@ -2,3 +2,7 @@ The collection() function is used to reference a specific collection in the Fire
 The getDocs() function is used to retrieve all documents from the specified collection. It returns a Promise that resolves to a QuerySnapshot object.
 
 The contactSnapshot.docs property is an array of DocumentSnapshot objects, each representing a document in the collection. The .map() function iterates through this array, creating a new object for each document. The new object contains the document's ID and all of its data fields. The ...doc.data() syntax spreads all the data fields from the document object into the new object.
+
+
+In React, the children prop is a special prop that allows you to pass components or elements as children to another component. When you use a component like this:
+
