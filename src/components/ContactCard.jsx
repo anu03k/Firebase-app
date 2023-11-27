@@ -3,9 +3,14 @@ import React from 'react'
 import { FaUser, FaUserEdit } from 'react-icons/fa'
 import { IoMdTrash } from 'react-icons/io'
 import { db } from '../config/firebase';
+import UpdateContact from './UpdateContact';
+import useDisclouse from '../hooks/useDisclouse';
 
 // props
 const ContactCard = ({contact}) => {
+  const {isOpen, onClose , onOpen}=useDisclouse();
+  // modal open or close
+  
 
     // delete contact
     const deleteContact= async (id)=>{
@@ -36,7 +41,7 @@ const ContactCard = ({contact}) => {
 
 
            <div className='flex text-3xl '>
-           <FaUserEdit className='text-black cursor-pointer' />
+           <FaUserEdit onClick={onOpen} className='text-black cursor-pointer' />
            <IoMdTrash className='text-gray cursor-pointer'   onClick={()=> deleteContact(contact.id)}/>
          
 
@@ -44,6 +49,7 @@ const ContactCard = ({contact}) => {
 
            
           </div>
+          <UpdateContact isOpen={isOpen} onClose={onClose} contact={contact} isEdit />
   </>
 }
 

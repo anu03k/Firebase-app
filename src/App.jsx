@@ -12,20 +12,14 @@ import Navbar from './components/Navbar'
 import { useEffect, useState } from 'react'
 import {collection ,getDocs} from "firebase/firestore";
 import {db} from "./config/firebase"
+import useDisclouse from './hooks/useDisclouse'
 
 
 
 function App() {
 
   const [contacts,setContacts] =useState([]);
-  const [isOpen,SetOpen]=useState(false);
-  // modal open or close
-  const onOpen=()=>{
-    SetOpen(true);
-  };
-  const onClose=()=>{
-    SetOpen(false);
-  }
+  const {isOpen, onClose , onOpen}=useDisclouse();
   
   useEffect(()=>{
     const getContact= async()=>{

@@ -1,19 +1,36 @@
 import React from 'react';
 import Modal from './Modal';
 import { Field, Form, Formik } from 'formik';
-import { collection, addDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import {db} from "../config/firebase"
  
-const UpdateContact = ({ isOpen, onClose }) => {
+
+
+const UpdateContact = ({ isOpen, onClose, isEdit, contact }) => {
+
+
+
+  
    const addContact = async (contact)=>{
     try{
-      const ContactRef = collection(db, "contacts");
+      const ContactRef = collection(db, "contacts" , id);
       await addDoc(ContactRef , contact)
     }catch (error){
       console.log(error)
     }
    };
 
+  //  update contact 
+  const UpdateContact = async (contact, id) => {
+    try {
+      const contactRef = doc(db, "contacts", id);
+      await updateDoc(contactRef, contact);
+      onClose();
+      toast.success("Contact Updated Successfully");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
 
 
@@ -25,14 +42,21 @@ const UpdateContact = ({ isOpen, onClose }) => {
     <>
       <Modal onClose={onClose} isOpen={isOpen}>
         <Formik
-          initialValues={{ name: '', email:" " }} 
+          initialValues={isEdit ? 
+            { name: contact.name, email:contact.email } :
+            
+            { name: '', email:" " }} 
           // object
 
           onSubmit={
             
             (values) =>{ console.log(values)
-              addContact(values);
+
+              isEdit? UpdateContact(values, contact.id) :addContact(values);
+              
               // name:values.name 
+
+              
             }
           }
         >
@@ -47,7 +71,7 @@ const UpdateContact = ({ isOpen, onClose }) => {
             </div>
 
             <div>
-              <button type="submit" className='bg-dark px-3 py-1.5 border mt-2'  >Add Contact</button>
+              <button type="submit" className='bg-dark px-3 py-1.5 border mt-2'   >  {isEdit ? "Update" : "Add"} Contact</button>
             </div>
           </Form>
         </Formik>
